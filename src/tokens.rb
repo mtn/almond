@@ -21,6 +21,7 @@ class Token
     end
 
     def ==(other)
+        return false unless other.class.is_a? Token
         @type == other.type
     end
 
@@ -38,6 +39,7 @@ class IdentifierTok < Token
     end
 
     def ==(other)
+        return false unless other.class.is_a? IdentifierTok
         @name == other.name
     end
 
@@ -55,6 +57,7 @@ class NumberTok < Token
     end
 
     def ==(other)
+        return false unless other.class.is_a? NumberTok
         @val == other.val
     end
 
@@ -72,6 +75,7 @@ class OperatorTok < Token
     end
 
     def ==(other)
+        return false unless other.class.is_a? OperatorTok
         @op == other.op
     end
 

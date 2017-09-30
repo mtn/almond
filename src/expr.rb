@@ -13,8 +13,7 @@ class Definition
     end
 end
 
-class Expr
-end
+class Expr; end
 
 class Number < Expr
     def initialize(val)
