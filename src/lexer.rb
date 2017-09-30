@@ -1,12 +1,44 @@
+require_relative 'tokens'
 
 class Lexer
 
-    def intialize(tokens)
-        @tokens = tokens
+    def intialize(input)
+        @input = input
         @ind = 0
     end
 
+    def peek
+        @input[@ind]
+    end
+
     def advance
+        @ind += 1
+    end
+
+    def readIdOrNum
+        tok = ''
+
+        loop do
+            c = @input[@ind]
+            break if not isdigit(c) or c == '.'
+            tok += c
+            advance
+        end
+
+        tok
+    end
+
+    def getTok
+        while isspace(@input[@ind])
+            advance
+        end
+
+        if @ind == @input.length
+            nil
+        end
+
+
+    end
 end
 
 def isspace(c)
@@ -25,55 +57,4 @@ def isdigit(c)
     c.match(/[0-9]+$/)
 end
 
-def gettok
-    lastChar = ' '
-    while isspace(lastChar)
-        lastChar = STDIN.getc
-        STDIN.getc
-    end
-
-    if isalpha(lastChar)
-        identifierStr = lastChar
-
-        lastChar = STDIN.getc
-        STDIN.getc
-        while isalphanum(lastChar)
-            identifierStr += lastChar
-            lastChar = STDIN.getc
-            STDIN.getc
-        end
-
-        if identifierStr == 'def'
-            return :tok_def
-        elsif identifierStr == 'extern'
-            return :tok_extern
-        else
-            return identifierStr
-        end
-    elsif isdigit(lastChar) or lastChar == '.'
-        numstr = ''
-        loop do
-            numstr += lastChar
-            lastChar = STDIN.getc
-            STDIN.getc
-            break if not isdigit(lastChar) or lastChar == '.'
-        end
-        return numstr.to_f
-    elsif lastChar == '#'
-        loop do
-            break if lastChar == EOF or lastChar == '\n' or lastChar == '\r'
-        end
-        if lastChar != EOF
-            return gettok
-        end
-    elsif lastChar == EOF
-        return :tok_eof
-    else
-        thisChar = lastChar
-        lastChar = STDIN.getc
-        STDIN.getc
-        return thisChar
-    end
-end
-
-gettok
+p $singleTokTable
