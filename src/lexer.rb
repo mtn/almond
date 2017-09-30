@@ -2,7 +2,7 @@ require_relative 'tokens'
 
 class Lexer
 
-    def intialize(input)
+    def initialize(input)
         @input = input
         @ind = 0
     end
@@ -20,7 +20,7 @@ class Lexer
 
         loop do
             c = @input[@ind]
-            break if not isdigits(c) or c == '.'
+            break if not isalphanum(c) or c == '.'
             tok += c
             advance
         end
@@ -29,6 +29,10 @@ class Lexer
     end
 
     def getTok
+        if not @input[@ind]
+            return nil
+        end
+
         while isspace(@input[@ind])
             advance
         end
@@ -38,18 +42,21 @@ class Lexer
         end
 
         if $singleTokTable[@input[@ind].to_sym]
+            tok = $singleTokTable[@input[@ind].to_sym].call()
             advance
-            return $singleTokTable[@input[@ind].to_sym].call()
+            return tok
         end
 
         if isalphanum(@input[@ind])
             str = readIdOrNum()
-            if ['def','extern','if','then','else'].include? str
-                return Token.new(str.to_sym)
-            elsif isdigits(str)
-                return Number.new(str.to_i)
-            else
-                return Identifier.new(str)
+            if str
+                if ['def','extern','if','then','else'].include? str
+                    return Token.new(str.to_sym)
+                elsif isdigits(str)
+                    return Number.new(str.to_i)
+                else
+                    return Identifier.new(str)
+                end
             end
         end
 
@@ -62,7 +69,9 @@ class Lexer
         loop do
             tok = getTok()
             if tok
-                toks += tok
+                toks.push(tok)
+            else
+                break
             end
         end
 
@@ -86,5 +95,5 @@ def isdigits(c)
     c.match(/[0-9]+$/)
 end
 
-toks = Lexer.new(input: "def foo(n) (n * 100.34);").lex()
+toks = Lexer.new('def foo(n) (n * 100);').lex()
 p toks
