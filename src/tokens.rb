@@ -24,6 +24,8 @@ class Token
 end
 
 class Identifier < Token
+    attr_reader :name
+
     def initialize(name)
         super(:identifier)
         @name = name
