@@ -1,4 +1,14 @@
 
+class Lexer
+
+    def intialize(tokens)
+        @tokens = tokens
+        @ind = 0
+    end
+
+    def advance
+end
+
 def isspace(c)
     c.match(/^\s*$/)
 end
