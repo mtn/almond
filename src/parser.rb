@@ -1,6 +1,7 @@
 require_relative 'errors'
 require_relative 'lexer'
 require_relative 'expr'
+require_relative 'file'
 
 class Parser
     def initialize(tokens)
@@ -59,23 +60,67 @@ class Parser
         raise UnexpectedEOF if not @tokens[@ind]
 
         case @tokens[@ind]
-        when Token.new(:left_paren)
+        when Token.new(:left_paren) then
             advance
             expr = parseExpression()
             parse(Token.new(:right_paren))
-        when NumberTok
+        when NumberTok then
             expr = @tokens[@ind]
             advance
-        when IdentifierTok
-            value = @tokens[@ind].name
+        when IdentifierTok then
+            name = @tokens[@ind].name
             advance
-            # if @tokens[@ind] == 
+            if @tokens[@ind] == Token.new(:left_paren)
+                params = parseTermList(parseExpression)
+                expr = Call.new(name,params)
+            else
+                expr = Variable.new(name)
+            end
+        when Token.new(:if) then
+            advance
+
+            cond = parseExpr()
+            parse(Token.new(:then))
+            tVal = parseExpr()
+            parse(Token.new(:else))
+            fVal = parseExpr()
+
+            expr = IfElse.new(cond,tVal,fVal)
+        else
+            raise UnexpectedToken
+        end
+
+        if @tokens[@ind].is_a? OperatorTok
+            op = @tokens[@ind].op
+            advance
+            rhs = parseExpr()
+            expr = Binary.new(expr,op,rhs)
         end
 
         expr
     end
+
+    def parseDefinition
+        parse(Token.new(:def))
+
+        proto = parsePrototype()
+        expr = parseExpression();
+        definition = Definition.new(proto,expr)
+
+        parse(Token.new(:semicolon))
+        definition
+    end
+
+    def parseExtern
+        parse(Token.new(:extern))
+        proto = parsePrototype()
+        parse(Token.new:semicolon)
+        proto
+    end
+
+    def run
+        file = Environment.new
+
+    end
 end
 
-a = IdentifierTok.new("abc")
-b = Token.new(:paren)
-puts a == b

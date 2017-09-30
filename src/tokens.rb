@@ -1,15 +1,15 @@
 
 $singleTokTable = {
-    ",": lambda { Token.new(:comma) },
-    "(": lambda { Token.new(:left_paren) },
-    ")": lambda { Token.new(:right_paren) },
-    ";": lambda { Token.new(:semicolon) },
-    "+": lambda { OperatorTok.new(:plus) },
-    "-": lambda { OperatorTok.new(:minus) },
-    "*": lambda { OperatorTok.new(:times) },
-    "/": lambda { OperatorTok.new(:divide) },
-    "%": lambda { OperatorTok.new(:mod) },
-    "=": lambda { OperatorTok.new(:equals) }
+    ',': lambda { Token.new(:comma) },
+    '(': lambda { Token.new(:left_paren) },
+    ')': lambda { Token.new(:right_paren) },
+    ';': lambda { Token.new(:semicolon) },
+    '+': lambda { OperatorTok.new(:plus) },
+    '-': lambda { OperatorTok.new(:minus) },
+    '*': lambda { OperatorTok.new(:times) },
+    '/': lambda { OperatorTok.new(:divide) },
+    '%': lambda { OperatorTok.new(:mod) },
+    '=': lambda { OperatorTok.new(:equals) }
 }
 
 
