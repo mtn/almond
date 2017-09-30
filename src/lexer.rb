@@ -20,7 +20,7 @@ class Lexer
 
         loop do
             c = @input[@ind]
-            break if not isdigit(c) or c == '.'
+            break if not isdigits(c) or c == '.'
             tok += c
             advance
         end
@@ -34,10 +34,39 @@ class Lexer
         end
 
         if @ind == @input.length
-            nil
+            return nil
         end
 
+        if $singleTokTable[@input[@ind].to_sym]
+            advance
+            return $singleTokTable[@input[@ind].to_sym].call()
+        end
 
+        if isalphanum(@input[@ind])
+            str = readIdOrNum()
+            if ['def','extern','if','then','else'].include? str
+                return Token.new(str.to_sym)
+            elsif isdigits(str)
+                return Number.new(str.to_i)
+            else
+                return Identifier.new(str)
+            end
+        end
+
+        nil
+    end
+
+    def lex
+        toks = []
+
+        loop do
+            tok = getTok()
+            if tok
+                toks += tok
+            end
+        end
+
+        toks
     end
 end
 
@@ -53,8 +82,9 @@ def isalphanum(c)
     c.match(/\A[[:alnum:]]+\z/)
 end
 
-def isdigit(c)
+def isdigits(c)
     c.match(/[0-9]+$/)
 end
 
-p $singleTokTable
+toks = Lexer.new(input: "def foo(n) (n * 100.34);").lex()
+p toks
