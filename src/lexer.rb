@@ -20,7 +20,7 @@ class Lexer
 
         loop do
             c = @input[@ind]
-            break if not isalphanum(c) or c == '.'
+            break if not isalphanum(c) and not c == '.'
             tok += c
             advance
         end
@@ -52,8 +52,8 @@ class Lexer
             if str
                 if ['def','extern','if','then','else'].include? str
                     return Token.new(str.to_sym)
-                elsif isdigits(str)
-                    return Number.new(str.to_i)
+                elsif isfloat(str)
+                    return Number.new(str.to_f)
                 else
                     return Identifier.new(str)
                 end
@@ -95,5 +95,9 @@ def isdigits(c)
     c.match(/[0-9]+$/)
 end
 
-toks = Lexer.new('def foo(n) (n * 100);').lex()
+def isfloat(c)
+    c.match(/^[-+]?([0-9]+(\.[0-9]+)?|\.[0-9]+)$/)
+end
+
+toks = Lexer.new('def foo(n) (n * 100.34);').lex()
 p toks
