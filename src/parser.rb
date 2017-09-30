@@ -29,8 +29,18 @@ class Parser
         else
             raise "Unexpected token #{@tokens[@ind]}"
         end
-
-
     end
+
+    def parseTermList(parseFn)
+        begin
+            parse()
+        rescue
+        end
+    end
+
 end
 
+a = Token.new(:left_paren)
+b = Token.new(:left_paren)
+puts a.class == b.class
+puts a == b

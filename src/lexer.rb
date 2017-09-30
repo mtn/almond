@@ -53,9 +53,9 @@ class Lexer
                 if ['def','extern','if','then','else'].include? str
                     return Token.new(str.to_sym)
                 elsif isfloat(str)
-                    return Number.new(str.to_f)
+                    return NumberTok.new(str.to_f)
                 else
-                    return Identifier.new(str)
+                    return IdentifierTok.new(str)
                 end
             end
         end

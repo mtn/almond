@@ -4,18 +4,24 @@ $singleTokTable = {
     "(": lambda { Token.new(:left_paren) },
     ")": lambda { Token.new(:right_paren) },
     ";": lambda { Token.new(:semicolon) },
-    "+": lambda { Operator.new(:plus) },
-    "-": lambda { Operator.new(:minus) },
-    "*": lambda { Operator.new(:times) },
-    "/": lambda { Operator.new(:divide) },
-    "%": lambda { Operator.new(:mod) },
-    "=": lambda { Operator.new(:equals) }
+    "+": lambda { OperatorTok.new(:plus) },
+    "-": lambda { OperatorTok.new(:minus) },
+    "*": lambda { OperatorTok.new(:times) },
+    "/": lambda { OperatorTok.new(:divide) },
+    "%": lambda { OperatorTok.new(:mod) },
+    "=": lambda { OperatorTok.new(:equals) }
 }
 
 
 class Token
+    attr_reader :type
+
     def initialize(type)
         @type = type #sym
+    end
+
+    def ==(other)
+        @type == other.type
     end
 
     def inspect
@@ -23,7 +29,7 @@ class Token
     end
 end
 
-class Identifier < Token
+class IdentifierTok < Token
     attr_reader :name
 
     def initialize(name)
@@ -31,22 +37,46 @@ class Identifier < Token
         @name = name
     end
 
+    def ==(other)
+        @name == other.name
+    end
+
     def inspect
         "tok.id.#{@name}"
     end
 end
 
-class Number < Token
+class NumberTok < Token
+    attr_reader :val
+
     def initialize(val)
         super(:number)
         @val = val
     end
+
+    def ==(other)
+        @val == other.val
+    end
+
+    def inspect
+        "tok.num.#{@val}"
+    end
 end
 
-class Operator < Token
+class OperatorTok < Token
+    attr_reader :op
+
     def initialize(op)
         super(:operator)
         @op = op #sym
+    end
+
+    def ==(other)
+        @op == other.op
+    end
+
+    def inspect
+        "tok.operator.#{@op}"
     end
 end
 
