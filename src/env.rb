@@ -20,7 +20,7 @@ class Environment
 
     def addDefinition(definition)
         @definitions.push(definition)
-        p definition
         @prototypes[definition.proto.name] = definition.proto
     end
+
 end

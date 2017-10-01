@@ -8,7 +8,7 @@ class Prototype
     end
 
     def inspect
-        "Prototype(#{@name},#{@params})"
+        "Prototype(#{@name.inspect},#{@params.inspect})"
     end
 end
 
@@ -18,6 +18,10 @@ class Definition
     def initialize(prototype,expr)
         @proto = prototype #prototype
         @expr = expr #expr
+    end
+
+    def inspect
+        "Definition(proto: #{@proto.inspect} expr: #{@expr.inspect})"
     end
 end
 
@@ -29,7 +33,7 @@ class Number < Expr
     end
 
     def inspect
-        "expr.num(#{@val})"
+        "expr.num(#{@val.inspect})"
     end
 end
 
@@ -39,7 +43,7 @@ class Variable < Expr
     end
 
     def inspect
-        "expr.var(#{@name})"
+        "expr.var(#{@name.inspect})"
     end
 end
 
@@ -62,7 +66,7 @@ class Call < Expr
     end
 
     def inspect
-        "expr.call(#{@name},#{@exprs})"
+        "expr.call(#{@name.inspect},#{@exprs.inspect})"
     end
 end
 
@@ -74,7 +78,7 @@ class IfElse < Expr
     end
 
     def inspect
-        "expr.ifelse(#{@cond},#{@texpr},#{@fexpr})"
+        "expr.ifelse(#{@cond.inspect},#{@texpr.inspect},#{@fexpr.inspect})"
     end
 end
 
