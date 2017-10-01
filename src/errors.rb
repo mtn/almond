@@ -1,4 +1,4 @@
 
 class UnexpectedEOF < RuntimeError; end
 
-class UnexpecedToken < RuntimeError; end
+class UnexpectedToken < RuntimeError; end

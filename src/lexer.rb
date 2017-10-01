@@ -99,5 +99,5 @@ def isfloat(c)
     c.match(/^[-+]?([0-9]+(\.[0-9]+)?|\.[0-9]+)$/)
 end
 
-toks = Lexer.new('def foo(n) (n * 100.34);').lex()
-p toks
+# toks = Lexer.new('def foo(n) (n * 100.34);').lex()
+# p toks

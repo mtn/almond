@@ -1,7 +1,7 @@
 require_relative 'errors'
 require_relative 'lexer'
 require_relative 'expr'
-require_relative 'file'
+require_relative 'env'
 
 class Parser
     def initialize(tokens)
@@ -15,7 +15,8 @@ class Parser
 
     def parse(token)
         raise UnexpectedEOF if not @tokens[@ind]
-        raise UnexpectedToken if not token == @tokens[@ind]
+        raise UnexpectedToken, "Expected: #{token.inspect} Got: #{@tokens[@ind].inspect}" \
+            unless token == @tokens[@ind]
 
         advance
     end
@@ -24,12 +25,12 @@ class Parser
         raise UnexpectedEOF if not @tokens[@ind]
 
         case @tokens[@ind]
-        when Identifier
+        when IdentifierTok
             name = @tokens[@ind].name
             advance
             return name
         else
-            raise UnexpectedToken
+            raise UnexpectedToken, 'Expected Identifier'
         end
     end
 
@@ -39,7 +40,7 @@ class Parser
         vals = []
         loop do
             break if @tokens[@ind] == Token.new(:right_paren)
-            val = parseFn()
+            val = parseFn.call()
             if @tokens[@ind] == Token.new(:comma)
                 parse(Token.new(:comma))
             end
@@ -52,7 +53,7 @@ class Parser
 
     def parsePrototype
         name = parseIdentifier()
-        params = parseTermList(parseIdentifier)
+        params = parseTermList(method(:parseIdentifier))
         Prototype.new(name,params)
     end
 
@@ -65,13 +66,13 @@ class Parser
             expr = parseExpression()
             parse(Token.new(:right_paren))
         when NumberTok then
-            expr = @tokens[@ind]
+            expr = Number.new(@tokens[@ind].val)
             advance
         when IdentifierTok then
             name = @tokens[@ind].name
             advance
             if @tokens[@ind] == Token.new(:left_paren)
-                params = parseTermList(parseExpression)
+                params = parseTermList(method(:parseExpression))
                 expr = Call.new(name,params)
             else
                 expr = Variable.new(name)
@@ -79,13 +80,13 @@ class Parser
         when Token.new(:if) then
             advance
 
-            cond = parseExpr()
+            cond = parseExpression()
             parse(Token.new(:then))
-            tVal = parseExpr()
+            thenVal = parseExpression()
             parse(Token.new(:else))
-            fVal = parseExpr()
+            elseVal = parseExpression()
 
-            expr = IfElse.new(cond,tVal,fVal)
+            expr = IfElse.new(cond,thenVal,elseVal)
         else
             raise UnexpectedToken
         end
@@ -93,7 +94,7 @@ class Parser
         if @tokens[@ind].is_a? OperatorTok
             op = @tokens[@ind].op
             advance
-            rhs = parseExpr()
+            rhs = parseExpression()
             expr = Binary.new(expr,op,rhs)
         end
 
@@ -114,13 +115,32 @@ class Parser
     def parseExtern
         parse(Token.new(:extern))
         proto = parsePrototype()
-        parse(Token.new:semicolon)
+        parse(Token.new(:semicolon))
         proto
     end
 
-    def run
-        file = Environment.new
+    def parseTopLevel
+        env = Environment.new
 
+        loop do
+            break unless @tokens[@ind]
+
+            case @tokens[@ind]
+            when Token.new(:extern) then
+                env.addExtern(parseExtern())
+            when Token.new(:def) then
+                env.addDefinition(parseDefinition())
+            else
+                expr = parseExpression()
+                parse(Token.new(:semicolon))
+                env.addExpression(expr)
+            end
+        end
+
+        env
     end
 end
 
+toks = Lexer.new("extern sqrt(n); def foo(n) (n * sqrt(n * 200) + 57 * n % 2);").lex()
+topLevel = Parser.new(toks).parseTopLevel()
+p topLevel

@@ -2,7 +2,7 @@
 class Environment
     attr_reader :prototypes
 
-    def initiallize
+    def initialize
         @externs = []
         @definitions = []
         @expressions = []
@@ -20,6 +20,7 @@ class Environment
 
     def addDefinition(definition)
         @definitions.push(definition)
+        p definition
         @prototypes[definition.proto.name] = definition.proto
     end
 end

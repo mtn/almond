@@ -1,12 +1,20 @@
 
 class Prototype
+    attr_reader :name
+
     def initialize(name,params)
         @name = name #str
         @params = params #[str]
     end
+
+    def inspect
+        "Prototype(#{@name},#{@params})"
+    end
 end
 
 class Definition
+    attr_reader :proto
+
     def initialize(prototype,expr)
         @proto = prototype #prototype
         @expr = expr #expr
@@ -43,7 +51,7 @@ class Binary < Expr
     end
 
     def inspect
-        "expr.binary(#{lexpr},#{@op},#{@rexpr})"
+        "expr.binary(#{@lexpr.inspect},#{@op.inspect},#{@rexpr.inspect})"
     end
 end
 
