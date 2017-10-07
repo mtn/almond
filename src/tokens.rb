@@ -9,7 +9,15 @@ $singleTokTable = {
     '*': lambda { OperatorTok.new(:times) },
     '/': lambda { OperatorTok.new(:divide) },
     '%': lambda { OperatorTok.new(:mod) },
-    '=': lambda { OperatorTok.new(:equals) }
+    '=': lambda { OperatorTok.new(:equals) },
+}
+
+$comparisonTokTable = {
+    '>':  lambda { OperatorTok.new(:greater_than) },
+    '<':  lambda { OperatorTok.new(:less_than) },
+    '>=': lambda { OperatorTok.new(:greater_than_equal) },
+    '<=': lambda { OperatorTok.new(:less_than_equal) },
+    '==': lambda { OperatorTok.new(:is_equal) },
 }
 
 

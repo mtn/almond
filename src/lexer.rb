@@ -41,6 +41,20 @@ class Lexer
             return nil
         end
 
+        compLookup = $comparisonTokTable[@input[@ind..@ind+1].to_sym] \
+            or $comparisonTokTable[@input[@ind]]
+        if compLookup
+            tok = compLookup.call()
+            p tok
+            advance
+            if [OperatorTok.new(:less_than_equal),
+                OperatorTok.new(:greater_than_equal),
+                OperatorTok.new(:is_equal)] .include? tok
+                advance
+            end
+            return tok
+        end
+
         if $singleTokTable[@input[@ind].to_sym]
             tok = $singleTokTable[@input[@ind].to_sym].call()
             advance
@@ -99,5 +113,3 @@ def isfloat(c)
     c.match(/^[-+]?([0-9]+(\.[0-9]+)?|\.[0-9]+)$/)
 end
 
-# toks = Lexer.new('def foo(n) (n * 100.34);').lex()
-# p toks

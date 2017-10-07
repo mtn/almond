@@ -68,6 +68,9 @@ class Binary < Expr
 end
 
 class Call < Expr
+    attr_reader :name
+    attr_reader :exprs
+
     def initialize(name,exprs)
         @name = name
         @exprs = exprs
