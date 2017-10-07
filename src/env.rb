@@ -1,5 +1,8 @@
 
 class Environment
+    attr_reader :externs
+    attr_reader :definitions
+    attr_reader :expressions
     attr_reader :prototypes
 
     def initialize

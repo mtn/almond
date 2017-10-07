@@ -7,15 +7,15 @@ class Emitter
     end
 
     def emit_function(definition)
-        f_out = ''
+        # f_out = ''
+        p definition
     end
 
     def run
-        p @ast
+        # p @ast.definitions
+        for d in @ast.definitions
+            emit_function(d)
+        end
     end
 end
-
-toks = Lexer.new("extern sqrt(n); def foo(n) (n * sqrt(n * 200) + 57 * n % 2);").lex()
-topLevel = Parser.new(toks).parseTopLevel()
-out = Emitter.new(topLevel).run()
 
