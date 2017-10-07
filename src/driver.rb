@@ -1,6 +1,7 @@
 require_relative 'emit'
 
 toks = Lexer.new("
+#blah commend
 def fib(x)
     if x == 3 then
         1

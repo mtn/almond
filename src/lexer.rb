@@ -41,11 +41,20 @@ class Lexer
             return nil
         end
 
+        if @input[@ind] == '#'
+            advance
+            loop do
+                advance
+                break if @input[@ind] == "\n"
+                break if not @input[@ind]
+            end
+            return :comment
+        end
+
         compLookup = $comparisonTokTable[@input[@ind..@ind+1].to_sym] \
             or $comparisonTokTable[@input[@ind]]
         if compLookup
             tok = compLookup.call()
-            p tok
             advance
             if [OperatorTok.new(:less_than_equal),
                 OperatorTok.new(:greater_than_equal),
@@ -83,7 +92,9 @@ class Lexer
         loop do
             tok = getTok()
             if tok
-                toks.push(tok)
+                if not tok == :comment
+                    toks.push(tok)
+                end
             else
                 break
             end
