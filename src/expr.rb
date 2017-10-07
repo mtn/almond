@@ -1,6 +1,7 @@
 
 class Prototype
     attr_reader :name
+    attr_reader :params
 
     def initialize(name,params)
         @name = name #str
@@ -14,6 +15,7 @@ end
 
 class Definition
     attr_reader :proto
+    attr_reader :expr
 
     def initialize(prototype,expr)
         @proto = prototype #prototype
@@ -28,6 +30,8 @@ end
 class Expr; end
 
 class Number < Expr
+    attr_reader :val
+
     def initialize(val)
         @val = val
     end
@@ -48,6 +52,10 @@ class Variable < Expr
 end
 
 class Binary < Expr
+    attr_reader :op
+    attr_reader :lexpr
+    attr_reader :rexpr
+
     def initialize(lexpr,op,rexpr)
         @op = op
         @lexpr = lexpr
