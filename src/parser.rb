@@ -86,6 +86,7 @@ class Parser
             parse(Token.new(:else))
             elseVal = parseExpression()
 
+            parse(Token.new(:end))
             expr = IfElse.new(cond,thenVal,elseVal)
         else
             raise UnexpectedToken
@@ -94,6 +95,7 @@ class Parser
         if @tokens[@ind].is_a? OperatorTok
             op = @tokens[@ind].op
             advance
+            advance if [:less_then_equal,:greater_than_equal,:is_equal].include? op
             rhs = parseExpression()
             expr = Binary.new(expr,op,rhs)
         end

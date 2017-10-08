@@ -37,8 +37,8 @@ class Emitter
         p @ast
         puts ''
         # p @ast.definitions[0].expr.rexpr.rexpr.lexpr.class
-        p emit_expression(@ast.definitions[0].expr.rexpr.lexpr)
-        p emit_expression(@ast.definitions[0].expr.rexpr.rexpr.lexpr)
+        # p emit_expression(@ast.definitions[0].expr.rexpr.lexpr)
+        # p emit_expression(@ast.definitions[0].expr.rexpr.rexpr.lexpr)
         puts ''
         for d in @ast.definitions
             emit_function(d)

@@ -8,6 +8,6 @@
                | '(' <expr> ')'
 <binary>     ::= <expr> <operator> <expr>
 <call>       ::= <identifier> '(' <arguments> ')'
-<ifelse>     ::= 'if' <expr> 'then' <expr> 'else' <expr>
+<ifelse>     ::= 'if' <expr> 'then' <expr> 'else' <expr> 'end'
 <arguments>  ::= <expr>
                | <expr> ',' <arguments>

@@ -51,16 +51,14 @@ class Lexer
             return :comment
         end
 
-        compLookup = $comparisonTokTable[@input[@ind..@ind+1].to_sym] \
-            or $comparisonTokTable[@input[@ind]]
+        compLookup = $comparisonTokTable[@input[@ind].to_sym] \
+            or $comparisonTokTable[@input[@ind..@ind+1].to_sym]
         if compLookup
             tok = compLookup.call()
             advance
-            if [OperatorTok.new(:less_than_equal),
+            advance if [OperatorTok.new(:less_than_equal),
                 OperatorTok.new(:greater_than_equal),
                 OperatorTok.new(:is_equal)] .include? tok
-                advance
-            end
             return tok
         end
 
