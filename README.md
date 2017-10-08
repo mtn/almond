@@ -28,3 +28,7 @@ For example, to compile `examples/fib.al`:
 
     sh almond examples/fib.al
 
+## LICENSE
+
+MIT, see [LICENSE](https://github.com/mtn/almond/blob/master/LICENSE).
+

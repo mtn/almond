@@ -3,5 +3,6 @@
 ruby "src/driver.rb" $1 > test.c
 if [ $? == 0 ]; then
     gcc test.c
+    rm test.c
 fi
 
