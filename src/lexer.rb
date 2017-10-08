@@ -33,7 +33,7 @@ class Lexer
             return nil
         end
 
-        while isspace(@input[@ind])
+        while @input[@ind] and isspace(@input[@ind])
             advance
         end
 
