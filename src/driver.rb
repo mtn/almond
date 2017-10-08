@@ -5,11 +5,11 @@ if ARGV.length > 0
         f = File.open(ARGV[0],'r')
     rescue
         puts 'Error: Input file not found'
-        exit
+        exit 1
     end
 else
     puts 'Error: No input file'
-    exit
+    exit 1
 end
 
 toks = Lexer.new(f.read).lex()

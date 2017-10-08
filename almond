@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ruby "src/driver.rb" $1 > test.c
+if [ $? == 0 ]; then
+    gcc test.c
+fi
+
