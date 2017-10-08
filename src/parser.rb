@@ -108,7 +108,7 @@ class Parser
         expr = parseExpression();
         definition = Definition.new(proto,expr)
 
-        parse(Token.new(:semicolon))
+        parse(Token.new(:end))
         definition
     end
 

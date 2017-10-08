@@ -1,7 +1,7 @@
 <prototype>  ::= <identifier> '(' <params> ')'
 <params>     ::= <identifier>
                | <identifier>, <params>
-<definition> ::= 'def' <prototype> <expr> ';'
+<definition> ::= 'def' <prototype> <expr> 'end'
 <extern>     ::= 'extern' <prototype> ';'
 <operator>   ::= '+' | '-' | '*' | '/' | '%' | '>' | '<' | '>=' | '<=' | '=='
 <expr>       ::= <binary> | <call> | <identifier> | <number> | <ifelse>

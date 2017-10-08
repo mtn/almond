@@ -20,7 +20,7 @@ class Lexer
 
         loop do
             c = @input[@ind]
-            break if not isalphanum(c) and not c == '.'
+            break if not c or not isalphanum(c) and not c == '.'
             tok += c
             advance
         end
@@ -73,7 +73,7 @@ class Lexer
         if isalphanum(@input[@ind])
             str = readIdOrNum()
             if str
-                if ['def','extern','if','then','else'].include? str
+                if ['def','extern','if','then','else','end'].include? str
                     return Token.new(str.to_sym)
                 elsif isfloat(str)
                     return NumberTok.new(str.to_f)
