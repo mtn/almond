@@ -33,12 +33,24 @@ class Emitter
                 expr.exprs.map! { |x| emit_expression(x) }.join(',') + \
             ')'
         when IfElse then
-            'if (' + emit_expression(expr.cond) + ') {' + \
-                'return (' + emit_expression(expr.texpr) + ')'+ \
-            '} ' + \
-            'else {' + \
-                'return (' + emit_expression(expr.fexpr) + ')'+ \
-            '} '
+            ifthen = 'if (' + emit_expression(expr.cond) + ') {'
+
+            if expr.texpr.is_a? IfElse
+                ifthen += emit_expression(expr.texpr)
+            else
+                ifthen += 'return (' + emit_expression(expr.texpr) + ');'
+            end
+            ifthen += '} '
+
+            ifthen += 'else {'
+            if expr.fexpr.is_a? IfElse
+                ifthen += emit_expression(expr.fexpr)
+            else
+                ifthen += 'return (' + emit_expression(expr.fexpr) + ');'
+            end
+            ifthen += '}'
+
+            ifthen
         when Binary then
             emit_expression(expr.lexpr) + $binaryTokTable[expr.op] + emit_expression(expr.rexpr)
         when Variable then
@@ -47,16 +59,17 @@ class Emitter
     end
 
     def run
-        p @ast
-        puts ''
-        p @ast.definitions[0].expr.class
-        # p emit_expression(@ast.definitions[0].expr.rexpr.lexpr)
-        # p emit_expression(@ast.definitions[0].expr.rexpr.rexpr.lexpr)
-        puts ''
         for d in @ast.definitions
             emit_function(d)
         end
-        p @out
+
+        @out.push('int main(){')
+        for e in @ast.expressions
+            @out.push('printf("%f",' + emit_expression(e)+');')
+        end
+        @out.push('}')
+
+        @out.join("\n")
     end
 end
 
