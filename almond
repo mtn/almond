@@ -1,7 +1,11 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]; then
+    echo "Error: No input file"
+fi
+
 ruby "src/driver.rb" $1 > out.c
-if [ $? == 0 ]; then
+if [ $? -eq 0 ]; then
     gcc out.c
     rm out.c
 fi
