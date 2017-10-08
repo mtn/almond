@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ruby "src/driver.rb" $1 > test.c
+ruby "src/driver.rb" $1 > out.c
 if [ $? == 0 ]; then
-    gcc test.c
-    rm test.c
+    gcc out.c
+    rm out.c
 fi
 

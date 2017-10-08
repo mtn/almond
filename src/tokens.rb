@@ -8,7 +8,6 @@ $singleTokTable = {
     '-': lambda { OperatorTok.new(:minus) },
     '*': lambda { OperatorTok.new(:times) },
     '/': lambda { OperatorTok.new(:divide) },
-    '%': lambda { OperatorTok.new(:mod) },
 }
 
 $comparisonTokTable = {
@@ -24,7 +23,6 @@ $binaryTokTable = {
     'minus': '-',
     'times': '*',
     'divide': '/',
-    'mod': '%',
     'greater_than': '>',
     'less_than': '<',
     'greater_than_equal': '>=',

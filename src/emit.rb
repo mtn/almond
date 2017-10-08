@@ -19,7 +19,11 @@ class Emitter
         declaration += '){'
         @out.push(declaration)
 
-        @out.push(emit_expression(definition.expr))
+        if definition.expr.is_a? IfElse
+            @out.push(emit_expression(definition.expr))
+        else
+            @out.push('return ' + emit_expression(definition.expr) + ';')
+        end
 
         @out.push('}')
     end
@@ -29,6 +33,7 @@ class Emitter
         when Number then
             expr.val.to_s
         when Call then
+            exit 1 unless @ast.prototypes[expr.name].params.length == expr.exprs.length
             expr.name + '(' + \
                 expr.exprs.map! { |x| emit_expression(x) }.join(',') + \
             ')'

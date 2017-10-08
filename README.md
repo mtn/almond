@@ -22,11 +22,11 @@ It's defined by the following grammar:
 
 ## Usage
 
-    sh almond file.al
+    ./almond file.al
 
 For example, to compile `examples/fib.al`:
 
-    sh almond examples/fib.al
+    ./almond examples/fib.al
 
 ## LICENSE
 
