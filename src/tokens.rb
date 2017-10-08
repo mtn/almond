@@ -9,7 +9,6 @@ $singleTokTable = {
     '*': lambda { OperatorTok.new(:times) },
     '/': lambda { OperatorTok.new(:divide) },
     '%': lambda { OperatorTok.new(:mod) },
-    '=': lambda { OperatorTok.new(:equals) },
 }
 
 $comparisonTokTable = {
@@ -20,6 +19,18 @@ $comparisonTokTable = {
     '==': lambda { OperatorTok.new(:is_equal) },
 }
 
+$binaryTokTable = {
+    'plus': '+',
+    'minus': '-',
+    'times': '*',
+    'divide': '/',
+    'mod': '%',
+    'greater_than': '>',
+    'less_than': '<',
+    'greater_than_equal': '>=',
+    'less_than_equal': '<=',
+    'is_equal': '==',
+}
 
 class Token
     attr_reader :type

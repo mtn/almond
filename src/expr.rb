@@ -42,6 +42,8 @@ class Number < Expr
 end
 
 class Variable < Expr
+    attr_reader :name
+
     def initialize(name)
         @name = name
     end
@@ -82,6 +84,10 @@ class Call < Expr
 end
 
 class IfElse < Expr
+    attr_reader :cond
+    attr_reader :texpr
+    attr_reader :fexpr
+
     def initialize(cond,texpr,fexpr)
         @cond = cond
         @texpr = texpr
