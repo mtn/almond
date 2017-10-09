@@ -33,7 +33,11 @@ class Emitter
         when Number then
             expr.val.to_s
         when Call then
-            exit 1 unless @ast.prototypes[expr.name].params.length == expr.exprs.length
+            raise UnknownFunction, "Unknown function #{expr.name}" \
+                unless @ast.prototypes[expr.name]
+            raise ArityMismatch, "Given #{expr.exprs.length.to_s} " + \
+                            "Expected #{@ast.prototypes[expr.name].params.length.to_s}" \
+                unless @ast.prototypes[expr.name].params.length == expr.exprs.length
             expr.name + '(' + \
                 expr.exprs.map! { |x| emit_expression(x) }.join(',') + \
             ')'

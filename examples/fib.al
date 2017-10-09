@@ -6,4 +6,4 @@ def fib(x)
     end
 end
 
-fib(40);
+fib(40); # Expect 102334155
