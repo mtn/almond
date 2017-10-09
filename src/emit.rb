@@ -74,7 +74,7 @@ class Emitter
 
         @out.push('int main(){')
         for e in @ast.expressions
-            @out.push('printf("%f",' + emit_expression(e)+');')
+            @out.push('printf("%f\n",' + emit_expression(e)+');')
         end
         @out.push('}')
 
