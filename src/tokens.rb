@@ -101,3 +101,16 @@ class OperatorTok < Token
     end
 end
 
+$tokenTable = {
+    'right_paren': Token.new(:right_paren),
+    'left_paren':  Token.new(:left_paren),
+    'semicolon':   Token.new(:semicolon),
+    'def':         Token.new(:def),
+    'extern':      Token.new(:extern),
+    'end':         Token.new(:end),
+    'else':        Token.new(:else),
+    'then':        Token.new(:then),
+    'if':          Token.new(:if),
+    'comma':       Token.new(:comma),
+}
+
