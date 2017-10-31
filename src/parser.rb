@@ -35,19 +35,19 @@ class Parser
     end
 
     def parseTermList(parseFn)
-        parse(Token.new(:left_paren))
+        parse($tokenTable[:left_paren])
 
         vals = []
         loop do
-            break if @tokens[@ind] == Token.new(:right_paren)
+            break if @tokens[@ind] == $tokenTable[:right_paren]
             val = parseFn.call()
-            if @tokens[@ind] == Token.new(:comma)
-                parse(Token.new(:comma))
+            if @tokens[@ind] == $tokenTable[:comma]
+                parse($tokenTable[:comma])
             end
             vals.push(val)
         end
 
-        parse(Token.new(:right_paren))
+        parse($tokenTable[:right_paren])
         vals
     end
 
@@ -61,32 +61,32 @@ class Parser
         raise UnexpectedEOF if not @tokens[@ind]
 
         case @tokens[@ind]
-        when Token.new(:left_paren) then
+        when $tokenTable[:left_paren] then
             advance
             expr = parseExpression()
-            parse(Token.new(:right_paren))
+            parse($tokenTable[:right_paren])
         when NumberTok then
             expr = Number.new(@tokens[@ind].val)
             advance
         when IdentifierTok then
             name = @tokens[@ind].name
             advance
-            if @tokens[@ind] == Token.new(:left_paren)
+            if @tokens[@ind] == $tokenTable[:left_paren]
                 params = parseTermList(method(:parseExpression))
                 expr = Call.new(name,params)
             else
                 expr = Variable.new(name)
             end
-        when Token.new(:if) then
+        when $tokenTable[:if] then
             advance
 
             cond = parseExpression()
-            parse(Token.new(:then))
+            parse($tokenTable[:then])
             thenVal = parseExpression()
-            parse(Token.new(:else))
+            parse($tokenTable[:else])
             elseVal = parseExpression()
 
-            parse(Token.new(:end))
+            parse($tokenTable[:end])
             expr = IfElse.new(cond,thenVal,elseVal)
         else
             raise UnexpectedToken
@@ -104,20 +104,20 @@ class Parser
     end
 
     def parseDefinition
-        parse(Token.new(:def))
+        parse($tokenTable[:def])
 
         proto = parsePrototype()
         expr = parseExpression();
         definition = Definition.new(proto,expr)
 
-        parse(Token.new(:end))
+        parse($tokenTable[:end])
         definition
     end
 
     def parseExtern
-        parse(Token.new(:extern))
+        parse($tokenTable[:extern])
         proto = parsePrototype()
-        parse(Token.new(:semicolon))
+        parse($tokenTable[:semicolon])
         proto
     end
 
@@ -128,13 +128,13 @@ class Parser
             break unless @tokens[@ind]
 
             case @tokens[@ind]
-            when Token.new(:extern) then
+            when $tokenTable[:extern] then
                 env.addExtern(parseExtern())
-            when Token.new(:def) then
+            when $tokenTable[:def] then
                 env.addDefinition(parseDefinition())
             else
                 expr = parseExpression()
-                parse(Token.new(:semicolon))
+                parse($tokenTable[:semicolon])
                 env.addExpression(expr)
             end
         end
