@@ -26,4 +26,7 @@ class Environment
         @prototypes[definition.proto.name] = definition.proto
     end
 
+    def inspect
+        "externs: #{@externs.inspect}\ndefs: #{@definitions.inspect}\nexprs: #{@expressions.inspect}\nprotos: #{@prototypes.inspect}"
+    end
 end
